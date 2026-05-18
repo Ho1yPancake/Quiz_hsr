@@ -1,0 +1,239 @@
+body {
+    margin: 0;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-image: url(images/table_train.png);
+    background-repeat: no-repeat;
+    background-size: cover;
+    font-family: 'Segoe UI', sans-serif;
+    color: white;
+    padding: 40px 20px;
+    box-sizing: border-box;
+}
+
+.back-btn {
+    position: absolute;
+    top: 30px;
+    left: 30px;
+    padding: 10px 20px;
+    background: rgba(255, 255, 255, 0.2);
+    border: 1px solid rgba(227, 193, 121, 0.4);
+    color: #e3c179;
+    cursor: pointer;
+    transition: 0.3s;
+    font-size: 14px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    border-radius: 8px;
+}
+
+.back-btn:hover {
+    background: #e3c179;
+    color: #000;
+    box-shadow: 0 0 15px rgba(227, 193, 121, 0.5);
+}
+
+.refresh-btn {
+    position: absolute;
+    top: 30px;
+    right: 30px;
+    padding: 10px 20px;
+    background: rgba(255, 255, 255, 0.2);
+    border: 1px solid rgba(227, 193, 121, 0.4);
+    color: #e3c179;
+    cursor: pointer;
+    transition: 0.3s;
+    font-size: 14px;
+    text-transform: uppercase;
+    border-radius: 8px;
+}
+
+.refresh-btn:hover {
+    background: #e3c179;
+    color: #000;
+}
+
+.table-container {
+    background: rgba(0, 0, 0, 0.4);
+    backdrop-filter: blur(15px);
+    padding: 30px 40px;
+    border-radius: 20px;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    box-shadow: 0 25px 50px rgba(0, 0, 0, 0.6);
+    max-width: 1300px;
+    width: 100%;
+}
+
+.table-title {
+    color: #e3c179;
+    font-size: 28px;
+    text-align: center;
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    margin-top: 0;
+    margin-bottom: 25px;
+    text-shadow: 0 0 10px rgba(227, 193, 121, 0.3);
+}
+
+/* Карточки со статистикой */
+.stats-summary {
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+    margin-bottom: 30px;
+}
+
+.stat-card {
+    background: rgba(255, 255, 255, 0.05);
+    padding: 12px 25px;
+    border-radius: 12px;
+    text-align: center;
+    border: 1px solid rgba(227, 193, 121, 0.2);
+}
+
+.stat-label {
+    display: block;
+    font-size: 12px;
+    color: rgba(255, 255, 255, 0.6);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 5px;
+}
+
+.stat-value {
+    display: block;
+    font-size: 28px;
+    font-weight: bold;
+    color: #e3c179;
+}
+
+.table-responsive {
+    overflow-x: auto;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    text-align: center;
+    font-size: 14px;
+}
+
+th {
+    color: #e3c179;
+    font-weight: 600;
+    padding: 16px 8px;
+    border-bottom: 2px solid rgba(227, 193, 121, 0.4);
+    text-transform: uppercase;
+    font-size: 12px;
+    letter-spacing: 0.5px;
+}
+
+td {
+    padding: 12px 8px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    color: #ccc;
+    transition: background 0.2s;
+}
+
+tr:hover td {
+    background: rgba(255, 255, 255, 0.03);
+    color: #fff;
+}
+
+/* Аватар в таблице */
+.user-cell {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding-left: 10px;
+}
+
+.user-avatar {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 1px solid rgba(227, 193, 121, 0.3);
+}
+
+.user-name {
+    font-weight: bold;
+    color: #fff;
+}
+
+/* Первое место */
+.rank-1 {
+    color: #e3c179;
+    font-weight: bold;
+    font-size: 18px;
+    text-shadow: 0 0 5px rgba(227, 193, 121, 0.5);
+}
+
+/* Второе место */
+.rank-2 {
+    color: #c0c0c0;
+    font-weight: bold;
+    font-size: 16px;
+}
+
+/* Третье место */
+.rank-3 {
+    color: #cd7f32;
+    font-weight: bold;
+    font-size: 15px;
+}
+
+.top-player td {
+    background: rgba(227, 193, 121, 0.05);
+}
+
+.top-player .user-name {
+    color: #e3c179;
+}
+
+.total-score {
+    font-weight: bold;
+    color: #fff;
+    background: rgba(255, 255, 255, 0.02);
+}
+
+.top-player .total-score {
+    color: #e3c179;
+    text-shadow: 0 0 8px rgba(227, 193, 121, 0.4);
+}
+
+.current-user-row {
+    background: rgba(227, 193, 121, 0.15);
+    border-left: 3px solid #e3c179;
+}
+
+.current-user-row td {
+    color: #e3c179;
+}
+
+.current-user-row .user-name {
+    color: #e3c179;
+}
+
+.empty-row td {
+    text-align: center;
+    padding: 40px;
+    color: #888;
+}
+
+/* Стилизация скролла таблицы */
+.table-responsive::-webkit-scrollbar {
+    height: 6px;
+}
+
+.table-responsive::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 3px;
+}
+
+.table-responsive::-webkit-scrollbar-thumb {
+    background: #e3c179;
+    border-radius: 3px;
+}

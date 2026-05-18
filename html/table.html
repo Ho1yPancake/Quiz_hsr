@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../style/normalize.css">
+    <link rel="stylesheet" href="../style/table.css">
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <title>Викторина - Таблица лидеров</title>
+</head>
+<body>
+    <button class="back-btn" id="backBtn">← В меню</button>
+    <button class="refresh-btn" id="refreshBtn">⟳ Обновить</button>
+
+    <div class="table-container">
+        <h1 class="table-title">ТАБЛИЦА ЛИДЕРОВ</h1>
+        
+        <div class="stats-summary" id="statsSummary">
+            <div class="stat-card">
+                <span class="stat-label">Всего игроков</span>
+                <span class="stat-value" id="totalPlayers">0</span>
+            </div>
+            <div class="stat-card">
+                <span class="stat-label">Рекорд</span>
+                <span class="stat-value" id="recordScore">0</span>
+            </div>
+        </div>
+        
+        <div class="table-responsive">
+            <table id="leaderboardTable">
+                <thead>
+                    <tr>
+                        <th>Место</th>
+                        <th>Игрок</th>
+                        <th>Станция "Герта"</th>
+                        <th>Ярило-VI</th>
+                        <th>Сяньчжоу</th>
+                        <th>Пенакония</th>
+                        <th>Амфореус</th>
+                        <th>Двумерния</th>
+                        <th>Итого</th>
+                    </tr>
+                </thead>
+                <tbody id="tableBody">
+                    <tr class="empty-row">
+                        <td colspan="9">Загрузка данных...</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <script src="../script/table.js"></script>
+</body>
+</html>

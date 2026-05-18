@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../style/normalize.css">
+    <link rel="stylesheet" href="../style/profile.css">
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <title>Викторина - Профиль</title>
+</head>
+<body>
+    <button class="back-btn" id="backBtn">← В меню</button>
+    <button class="logout-btn" id="logoutBtn">Выйти</button>
+
+    <div class="profile-container">
+        <div class="profile-card">
+            <!-- Аватар с возможностью смены -->
+            <div class="avatar-section">
+                <div class="avatar-frame" id="avatarFrame">
+                    <img src="#" class="avatar-img" id="avatarImg">
+                </div>
+                <button class="change-avatar-btn" id="changeAvatarBtn">Сменить аватар</button>
+            </div>
+
+            <div class="user-info">
+                <h2 class="nickname" id="profileName">Загрузка...</h2>
+                <div class="divider"></div>
+                
+                <!-- Основная статистика -->
+                <div class="stats-section">
+                    <h3>Общая статистика</h3>
+                    <div class="stat-item">
+                        <span class="label">Всего прохождений:</span>
+                        <span class="value" id="playthroughs"></span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="label">Общий счёт:</span>
+                        <span class="value" id="totalScore"></span>
+                    </div>
+                </div>
+
+                <div class="divider-light"></div>
+
+                <!-- Статистика по регионам -->
+                <div class="stats-section">
+                    <h3>Очки по регионам</h3>
+                    <div class="region-stats">
+                        <div class="region-item">
+                            <span class="region-name">Станция "Герта"</span>
+                            <span class="region-value" id="hertaScore"></span>
+                        </div>
+                        <div class="region-item">
+                            <span class="region-name">Ярило-VI</span>
+                            <span class="region-value" id="jariloScore"></span>
+                        </div>
+                        <div class="region-item">
+                            <span class="region-name">Сяньчжоу</span>
+                            <span class="region-value" id="xianScore"></span>
+                        </div>
+                        <div class="region-item">
+                            <span class="region-name">Пенакония</span>
+                            <span class="region-value" id="penaconyScore"></span>
+                        </div>
+                        <div class="region-item">
+                            <span class="region-name">Амфореус</span>
+                            <span class="region-value" id="amphoreusScore"></span>
+                        </div>
+                        <div class="region-item">
+                            <span class="region-name">Планкадия</span>
+                            <span class="region-value" id="plancardiaScore"></span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Кнопка смены имени -->
+                <button class="edit-name-btn" id="editNameBtn">Сменить имя</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Модальное окно выбора аватара -->
+    <div id="avatarModal" class="modal" style="display: none;">
+        <div class="modal-content modal-avatar">
+            <span class="close-modal" id="closeAvatarModal">&times;</span>
+            <h3>Выберите аватар</h3>
+            <div class="avatar-grid" id="avatarGrid">
+                <!-- Аватары будут добавлены через JS -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Модальное окно смены имени -->
+    <div id="nameModal" class="modal" style="display: none;">
+        <div class="modal-content">
+            <span class="close-modal" id="closeNameModal">&times;</span>
+            <h3>Сменить имя</h3>
+            <input type="text" id="newNameInput" class="modal-input" placeholder="Новое имя">
+            <button id="saveNameBtn" class="modal-btn">Сохранить</button>
+        </div>
+    </div>
+
+    <div id="statusMessage" class="status-toast" style="display: none;"></div>
+
+    <script src="../script/profile.js"></script>
+</body>
+</html>
