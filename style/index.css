@@ -9,6 +9,8 @@ body {
     background-size: cover;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     color: white;
+    padding: 20px;
+    box-sizing: border-box;
 }
 
 .menu-container {
@@ -19,6 +21,8 @@ body {
     backdrop-filter: blur(10px);
     border: 1px solid rgba(255, 255, 255, 0.1);
     box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+    max-width: 500px;
+    width: 100%;
 }
 
 h1 {
@@ -45,6 +49,7 @@ h1 {
     cursor: pointer;
     transition: all 0.3s ease;
     text-transform: capitalize;
+    border-radius: 8px;
 }
 
 .menu-btn:hover {
@@ -58,9 +63,6 @@ h1 {
     transform: scale(0.98);
 }
 
-/* Добавьте эти стили в конец вашего существующего index.css */
-
-/* Вкладки аутентификации */
 .auth-tabs {
     display: flex;
     gap: 10px;
@@ -91,7 +93,6 @@ h1 {
     color: #e3c179;
 }
 
-/* Формы */
 .auth-form {
     display: none;
 }
@@ -158,7 +159,6 @@ h1 {
     border: 1px solid #dc3545;
 }
 
-/* Кнопка выхода в главном меню */
 .logout-main-btn {
     background: rgba(220, 53, 69, 0.3);
     border-color: rgba(220, 53, 69, 0.5);
@@ -169,4 +169,39 @@ h1 {
     background: #dc3545;
     color: white;
     transform: translateX(10px);
+}
+
+@media (max-width: 768px) {
+    body {
+        padding: 15px;
+    }
+    
+    .menu-container {
+        padding: 25px 20px;
+    }
+    
+    h1 {
+        font-size: 20px;
+        margin-bottom: 30px;
+    }
+    
+    .menu-btn {
+        padding: 10px 20px;
+        font-size: 18px;
+    }
+    
+    .tab-btn {
+        font-size: 16px;
+        padding: 8px;
+    }
+    
+    .auth-input {
+        padding: 12px 15px;
+        font-size: 14px;
+    }
+    
+    .auth-action-btn {
+        padding: 10px 20px;
+        font-size: 16px;
+    }
 }

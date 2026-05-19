@@ -2,17 +2,16 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <link rel="stylesheet" href="../style/normalize.css">
     <link rel="stylesheet" href="../style/quiz.css">
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-    <title>Викторина - Honkai: Star Rail</title>
+    <title>Викторина - Викторина</title>
 </head>
 <body>
-    <button class="exit-btn" id="exitBtn">← Выйти</button>
+    <button class="exit-btn" id="exitBtn">Выйти</button>
 
     <div class="quiz-container">
-        <!-- Шапка викторины -->
         <div class="quiz-header">
             <div class="planet-info">
                 <h2 id="planetName" class="planet-name">Загрузка...</h2>
@@ -25,7 +24,6 @@
             </div>
         </div>
 
-        <!-- Прогресс -->
         <div class="progress-section">
             <div class="progress-bar">
                 <div class="progress-fill" id="progressFill"></div>
@@ -35,12 +33,10 @@
             </div>
         </div>
 
-        <!-- Блок вопроса -->
         <div class="question-block">
             <p class="question-text" id="questionText">Загрузка вопросов...</p>
         </div>
 
-        <!-- Блок ответов -->
         <div class="answers-grid">
             <button class="answer-btn" data-answer="A">
                 <span class="answer-letter">A</span>
@@ -60,13 +56,11 @@
             </button>
         </div>
 
-        <!-- Кнопка следующего вопроса -->
         <div class="next-section">
             <button class="next-btn" id="nextBtn" disabled>Следующий вопрос</button>
         </div>
     </div>
 
-    <!-- Модальное окно подтверждения выхода -->
     <div id="exitModal" class="modal" style="display: none;">
         <div class="modal-content">
             <h3>Выход из викторины</h3>
@@ -79,7 +73,6 @@
         </div>
     </div>
 
-    <!-- Модальное окно результатов -->
     <div id="resultsModal" class="modal" style="display: none;">
         <div class="modal-content results-content">
             <h2>Результаты викторины</h2>
@@ -93,6 +86,7 @@
         </div>
     </div>
 
+    <script src="../script/config.js"></script>
     <script src="../script/quiz.js"></script>
 </body>
 </html>

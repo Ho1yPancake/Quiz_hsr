@@ -2,15 +2,15 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <link rel="stylesheet" href="../style/normalize.css">
     <link rel="stylesheet" href="../style/table.css">
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <title>Викторина - Таблица лидеров</title>
 </head>
 <body>
-    <button class="back-btn" id="backBtn">← В меню</button>
-    <button class="refresh-btn" id="refreshBtn">⟳ Обновить</button>
+    <button class="back-btn" id="backBtn">В меню</button>
+    <button class="refresh-btn" id="refreshBtn">Обновить</button>
 
     <div class="table-container">
         <h1 class="table-title">ТАБЛИЦА ЛИДЕРОВ</h1>
@@ -18,11 +18,11 @@
         <div class="stats-summary" id="statsSummary">
             <div class="stat-card">
                 <span class="stat-label">Всего игроков</span>
-                <span class="stat-value" id="totalPlayers">0</span>
+                <span class="stat-value" id="totalPlayers"></span>
             </div>
             <div class="stat-card">
                 <span class="stat-label">Рекорд</span>
-                <span class="stat-value" id="recordScore">0</span>
+                <span class="stat-value" id="recordScore"></span>
             </div>
         </div>
         
@@ -50,6 +50,7 @@
         </div>
     </div>
 
+    <script src="../script/config.js"></script>
     <script src="../script/table.js"></script>
 </body>
 </html>

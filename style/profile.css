@@ -1,6 +1,6 @@
 body {
     margin: 0;
-    height: 100vh;
+    min-height: 100vh;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -9,15 +9,16 @@ body {
     background-size: cover;
     font-family: 'Segoe UI', sans-serif;
     color: white;
-    overflow: hidden;
     position: relative;
+    padding: 20px;
+    box-sizing: border-box;
 }
 
 .back-btn {
     position: absolute;
-    top: 30px;
-    left: 30px;
-    padding: 10px 20px;
+    top: 20px;
+    left: 20px;
+    padding: 8px 16px;
     background: rgba(255, 255, 255, 0.2);
     border: 1px solid rgba(227, 193, 121, 0.4);
     color: #e3c179;
@@ -26,6 +27,7 @@ body {
     font-size: 14px;
     text-transform: uppercase;
     border-radius: 8px;
+    z-index: 10;
 }
 
 .back-btn:hover {
@@ -36,9 +38,9 @@ body {
 
 .logout-btn {
     position: absolute;
-    top: 30px;
-    right: 30px;
-    padding: 10px 20px;
+    top: 20px;
+    right: 20px;
+    padding: 8px 16px;
     background: rgba(220, 53, 69, 0.3);
     border: 1px solid rgba(220, 53, 69, 0.5);
     color: #f5a5a5;
@@ -47,6 +49,7 @@ body {
     font-size: 14px;
     text-transform: uppercase;
     border-radius: 8px;
+    z-index: 10;
 }
 
 .logout-btn:hover {
@@ -58,14 +61,17 @@ body {
 .profile-card {
     background: rgba(0, 0, 0, 0.5);
     backdrop-filter: blur(15px);
-    padding: 30px 40px;
+    padding: 25px 30px;
     border-radius: 20px;
     border: 1px solid rgba(255, 255, 255, 0.1);
     text-align: center;
     box-shadow: 0 25px 50px rgba(0, 0, 0, 0.5);
-    min-width: 400px;
+    min-width: 320px;
+    max-width: 500px;
+    width: 100%;
     max-height: 90vh;
     overflow-y: auto;
+    margin: 0 auto;
 }
 
 .avatar-frame {
@@ -87,7 +93,7 @@ body {
 
 .nickname {
     color: #e3c179;
-    font-size: 26px;
+    font-size: 24px;
     margin: 0 0 10px;
     letter-spacing: 2px;
 }
@@ -117,10 +123,11 @@ body {
 
 .stat-item {
     margin: 10px 0;
-    font-size: 18px;
+    font-size: 16px;
     display: flex;
     justify-content: space-between;
-    padding: 0 15px;
+    padding: 0 10px;
+    gap: 10px;
 }
 
 .label {
@@ -136,7 +143,7 @@ body {
 .region-stats {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
-    gap: 12px;
+    gap: 10px;
     margin-top: 10px;
 }
 
@@ -148,6 +155,7 @@ body {
     justify-content: space-between;
     align-items: center;
     transition: 0.3s;
+    gap: 10px;
 }
 
 .region-item:hover {
@@ -156,13 +164,13 @@ body {
 
 .region-name {
     color: rgba(255, 255, 255, 0.8);
-    font-size: 14px;
+    font-size: 13px;
 }
 
 .region-value {
     color: #e3c179;
     font-weight: bold;
-    font-size: 18px;
+    font-size: 16px;
 }
 
 .edit-name-btn {
@@ -182,7 +190,6 @@ body {
     color: #000;
 }
 
-/* Модальное окно */
 .modal {
     position: fixed;
     top: 0;
@@ -194,14 +201,16 @@ body {
     justify-content: center;
     align-items: center;
     z-index: 1000;
+    padding: 20px;
+    box-sizing: border-box;
 }
 
 .modal-content {
     background: rgba(0, 0, 0, 0.95);
     backdrop-filter: blur(10px);
-    padding: 30px;
+    padding: 25px;
     border-radius: 16px;
-    width: 90%;
+    width: 100%;
     max-width: 350px;
     position: relative;
     border: 1px solid rgba(227, 193, 121, 0.3);
@@ -272,9 +281,10 @@ body {
     border: 1px solid #e3c179;
     z-index: 1001;
     text-align: center;
+    font-size: 14px;
+    white-space: nowrap;
 }
 
-/* Стилизация скролла */
 .profile-card::-webkit-scrollbar {
     width: 6px;
 }
@@ -289,7 +299,6 @@ body {
     border-radius: 3px;
 }
 
-/* Секция аватара */
 .avatar-section {
     display: flex;
     flex-direction: column;
@@ -314,7 +323,6 @@ body {
     color: #000;
 }
 
-/* Сетка аватаров в модальном окне */
 .avatar-grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
@@ -345,29 +353,26 @@ body {
 }
 
 .avatar-option-img {
-    width: 80px;
-    height: 80px;
+    width: 70px;
+    height: 70px;
     border-radius: 50%;
     object-fit: cover;
     margin-bottom: 8px;
 }
 
 .avatar-option-name {
-    font-size: 12px;
+    font-size: 11px;
     color: rgba(255, 255, 255, 0.7);
 }
 
-/* Модальное окно для аватаров */
 .modal-avatar {
     max-width: 450px;
-    width: 90%;
 }
 
 .modal-avatar h3 {
     text-align: center;
 }
 
-/* Стилизация скролла для сетки аватаров */
 .avatar-grid::-webkit-scrollbar {
     width: 6px;
 }
@@ -380,4 +385,67 @@ body {
 .avatar-grid::-webkit-scrollbar-thumb {
     background: #e3c179;
     border-radius: 3px;
+}
+
+@media (max-width: 768px) {
+    body {
+        padding: 15px;
+    }
+    
+    .back-btn, .logout-btn {
+        padding: 6px 12px;
+        font-size: 12px;
+        top: 15px;
+    }
+    
+    .back-btn {
+        left: 15px;
+    }
+    
+    .logout-btn {
+        right: 15px;
+    }
+    
+    .profile-card {
+        padding: 20px;
+        min-width: auto;
+    }
+    
+    .avatar-frame {
+        width: 100px;
+        height: 100px;
+    }
+    
+    .nickname {
+        font-size: 20px;
+    }
+    
+    .stat-item {
+        font-size: 14px;
+    }
+    
+    .region-name {
+        font-size: 11px;
+    }
+    
+    .region-value {
+        font-size: 14px;
+    }
+    
+    .avatar-option-img {
+        width: 60px;
+        height: 60px;
+    }
+    
+    .avatar-grid {
+        gap: 10px;
+    }
+    
+    .status-toast {
+        white-space: normal;
+        text-align: center;
+        max-width: 90%;
+        font-size: 12px;
+        padding: 10px 20px;
+    }
 }

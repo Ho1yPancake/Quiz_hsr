@@ -2,24 +2,22 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <link rel="stylesheet" href="../style/normalize.css">
     <link rel="stylesheet" href="../style/index.css">
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-    <title>Викторина Honkai: Star Rail</title>
+    <title>Викторина</title>
 </head>
 <body>
     <div class="menu-container">
         <h1>Викторина по Honkai: Star Rail</h1>
         
-        <!-- Если пользователь не залогинен - показываем вход/регистрацию -->
         <div id="auth-section">
             <div class="auth-tabs">
                 <button class="tab-btn active" data-tab="login">Вход</button>
                 <button class="tab-btn" data-tab="register">Регистрация</button>
             </div>
 
-            <!-- Форма входа -->
             <div id="login-form" class="auth-form active">
                 <div id="login-status" class="status-message"></div>
                 <input type="email" id="login-email" class="auth-input" placeholder="Email" required>
@@ -27,7 +25,6 @@
                 <button id="login-btn" class="menu-btn auth-action-btn">Войти</button>
             </div>
 
-            <!-- Форма регистрации -->
             <div id="register-form" class="auth-form">
                 <div id="register-status" class="status-message"></div>
                 <input type="text" id="reg-name" class="auth-input" placeholder="Ваше имя" required>
@@ -37,7 +34,6 @@
             </div>
         </div>
 
-        <!-- Главное меню (показывается только после входа) -->
         <div id="main-menu-section" style="display: none;">
             <nav class="menu-nav">
                 <button class="menu-btn" onclick="location.href='quiz.html'">Начать викторину</button>
@@ -48,6 +44,7 @@
         </div>
     </div>
 
+    <script src="../script/config.js"></script>
     <script src="../script/auth.js"></script>
 </body>
 </html>

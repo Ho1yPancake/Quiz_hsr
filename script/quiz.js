@@ -1,22 +1,3 @@
-// ============================================================
-// ПРОВЕРКА ЗАГРУЗКИ SUPABASE
-// ============================================================
-if (typeof window.supabase === 'undefined') {
-    console.error('Supabase не загружен!');
-    alert('Ошибка загрузки библиотеки Supabase. Обновите страницу.');
-}
-
-// ============================================================
-// НАСТРОЙКА SUPABASE - ЗАМЕНИТЕ НА СВОИ ДАННЫЕ
-// ============================================================
-const SUPABASE_URL = 'https://pevaixbmyyeixzifovlf.supabase.co';
-const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InBldmFpeGJteXllaXh6aWZvdmxmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzkwOTA0MDYsImV4cCI6MjA5NDY2NjQwNn0.Ov96oqpbOfd1o3AxmC6S2sqV8w682d8dzRrjnHCPDzo';
-
-const quizSupabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-
-// ============================================================
-// КОНСТАНТЫ
-// ============================================================
 const PLANETS = [
     { id: 'herta', name: 'Станция Герта', background: 'Herta.png', scoreField: 'herta_p' },
     { id: 'jarilo', name: 'Ярило-VI', background: 'belobog.png', scoreField: 'jarilo_p' },
@@ -27,7 +8,6 @@ const PLANETS = [
 ];
 
 const TIME_PER_QUESTION = 30;
-let currentUser = null;
 let allQuestions = [];
 let currentQuestionIndex = 0;
 let userAnswers = [];
@@ -39,19 +19,8 @@ let selectedAnswer = null;
 let timerPaused = false;
 let isAutoSwitching = false;
 
-// ============================================================
-// ПОЛУЧЕНИЕ ПОЛЬЗОВАТЕЛЯ
-// ============================================================
-async function getCurrentUser() {
-    const { data: { user } } = await quizSupabase.auth.getUser();
-    return user;
-}
-
-// ============================================================
-// ЗАГРУЗКА ВОПРОСОВ
-// ============================================================
 async function loadAllQuestions() {
-    const { data, error } = await quizSupabase
+    const { data, error } = await mySupabase
         .from('quiz_questions')
         .select('*')
         .order('planet', { ascending: true })
@@ -64,16 +33,14 @@ async function loadAllQuestions() {
     return data;
 }
 
-// ============================================================
-// ОБНОВЛЕНИЕ СТАТИСТИКИ ПОЛЬЗОВАТЕЛЯ
-// ============================================================
 async function updateUserStats(scores) {
-    if (!currentUser) return;
+    const user = await getCurrentUser();
+    if (!user) return;
     
-    const { data: existing } = await quizSupabase
+    const { data: existing } = await mySupabase
         .from('user_stats')
         .select('*')
-        .eq('id', currentUser.id)
+        .eq('id', user.id)
         .single();
     
     const updates = {
@@ -84,17 +51,14 @@ async function updateUserStats(scores) {
         updates[planet.scoreField] = (existing?.[planet.scoreField] || 0) + (scores[planet.id] || 0);
     }
     
-    const { error } = await quizSupabase
+    const { error } = await mySupabase
         .from('user_stats')
         .update(updates)
-        .eq('id', currentUser.id);
+        .eq('id', user.id);
     
     if (error) console.error('Ошибка обновления статистики:', error);
 }
 
-// ============================================================
-// СМЕНА ФОНА ПЛАНЕТЫ
-// ============================================================
 function changePlanetBackground(planetId) {
     const planet = PLANETS.find(p => p.id === planetId);
     if (planet && planet.background) {
@@ -105,9 +69,6 @@ function changePlanetBackground(planetId) {
     }
 }
 
-// ============================================================
-// ОТОБРАЖЕНИЕ ТЕКУЩЕГО ВОПРОСА
-// ============================================================
 function displayCurrentQuestion() {
     const question = allQuestions[currentQuestionIndex];
     if (!question) return;
@@ -134,9 +95,6 @@ function displayCurrentQuestion() {
     resetTimer();
 }
 
-// ============================================================
-// ТАЙМЕР
-// ============================================================
 function resetTimer() {
     if (timerInterval) clearInterval(timerInterval);
     timeLeft = TIME_PER_QUESTION;
@@ -174,9 +132,6 @@ function resumeTimer() {
     timerPaused = false;
 }
 
-// ============================================================
-// ОБРАБОТКА ТАЙМАУТА (АВТОМАТИЧЕСКИЙ ПЕРЕХОД)
-// ============================================================
 function handleTimeout() {
     if (isAnswered || isAutoSwitching) return;
     
@@ -185,7 +140,6 @@ function handleTimeout() {
     
     const question = allQuestions[currentQuestionIndex];
     
-    // Сохраняем ответ как неправильный
     userAnswers.push({
         planet: question.planet,
         questionNum: question.num,
@@ -194,18 +148,15 @@ function handleTimeout() {
         isCorrect: false
     });
     
-    // Блокируем кнопки ответов
     document.querySelectorAll('.answer-btn').forEach(btn => {
         btn.style.pointerEvents = 'none';
         btn.classList.add('disabled');
     });
     
-    // Показываем сообщение о timeout
     const nextBtn = document.getElementById('nextBtn');
     nextBtn.disabled = false;
-    nextBtn.textContent = 'Время вышло →';
+    nextBtn.textContent = 'Время вышло';
     
-    // Автоматически переключаем через 1 секунду
     setTimeout(() => {
         if (currentQuestionIndex + 1 < allQuestions.length) {
             nextQuestion();
@@ -216,9 +167,6 @@ function handleTimeout() {
     }, 1000);
 }
 
-// ============================================================
-// ОБРАБОТКА ВЫБОРА ОТВЕТА
-// ============================================================
 function handleAnswer(selectedAnswerLetter, button) {
     if (isAnswered) return;
     
@@ -231,9 +179,6 @@ function handleAnswer(selectedAnswerLetter, button) {
     document.getElementById('nextBtn').disabled = false;
 }
 
-// ============================================================
-// ПОДТВЕРЖДЕНИЕ ОТВЕТА И ПЕРЕХОД
-// ============================================================
 function confirmAndNext() {
     if (isAnswered) return;
     
@@ -260,9 +205,6 @@ function confirmAndNext() {
     nextQuestion();
 }
 
-// ============================================================
-// ПЕРЕХОД К СЛЕДУЮЩЕМУ ВОПРОСУ
-// ============================================================
 function nextQuestion() {
     currentQuestionIndex++;
     
@@ -273,9 +215,6 @@ function nextQuestion() {
     }
 }
 
-// ============================================================
-// ЗАВЕРШЕНИЕ ВИКТОРИНЫ
-// ============================================================
 function finishQuiz() {
     if (timerInterval) clearInterval(timerInterval);
     
@@ -334,17 +273,11 @@ function showResults(scores, totalScore) {
     document.getElementById('resultsModal').style.display = 'flex';
 }
 
-// ============================================================
-// ВЫХОД ИЗ ВИКТОРИНЫ
-// ============================================================
 function exitQuiz() {
     if (timerInterval) clearInterval(timerInterval);
     window.location.href = 'index.html';
 }
 
-// ============================================================
-// ПОКАЗ МОДАЛЬНОГО ОКНА ВЫХОДА
-// ============================================================
 function showExitModal() {
     pauseTimer();
     document.getElementById('exitModal').style.display = 'flex';
@@ -355,12 +288,9 @@ function hideExitModal() {
     document.getElementById('exitModal').style.display = 'none';
 }
 
-// ============================================================
-// ИНИЦИАЛИЗАЦИЯ
-// ============================================================
 async function initQuiz() {
-    currentUser = await getCurrentUser();
-    if (!currentUser) {
+    const user = await getCurrentUser();
+    if (!user) {
         window.location.href = 'index.html';
         return;
     }

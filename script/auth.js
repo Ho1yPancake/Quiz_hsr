@@ -1,15 +1,3 @@
-// ============================================================
-// НАСТРОЙКА SUPABASE - ЗАМЕНИТЕ НА СВОИ ДАННЫЕ!
-// ============================================================
-const MY_SUPABASE_URL = 'https://pevaixbmyyeixzifovlf.supabase.co';
-const MY_SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InBldmFpeGJteXllaXh6aWZvdmxmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzkwOTA0MDYsImV4cCI6MjA5NDY2NjQwNn0.Ov96oqpbOfd1o3AxmC6S2sqV8w682d8dzRrjnHCPDzo';
-
-// Используем уникальное имя переменной, чтобы избежать конфликтов
-const mySupabase = window.supabase.createClient(MY_SUPABASE_URL, MY_SUPABASE_ANON_KEY);
-
-// ============================================================
-// ФУНКЦИЯ ВХОДА
-// ============================================================
 async function signIn(email, password) {
     const statusDiv = document.getElementById('login-status');
     statusDiv.className = 'status-message';
@@ -27,7 +15,7 @@ async function signIn(email, password) {
     }
     
     statusDiv.className = 'status-message success';
-    statusDiv.innerText = 'Успешный вход!';
+    statusDiv.innerText = 'Успешный вход';
     
     setTimeout(() => {
         showMainMenu();
@@ -36,9 +24,6 @@ async function signIn(email, password) {
     return true;
 }
 
-// ============================================================
-// ФУНКЦИЯ РЕГИСТРАЦИИ
-// ============================================================
 async function signUp(name, email, password) {
     const statusDiv = document.getElementById('register-status');
     statusDiv.className = 'status-message';
@@ -66,7 +51,6 @@ async function signUp(name, email, password) {
         return false;
     }
     
-    // Создаём запись в user_stats с аватаром по умолчанию
     if (data.user) {
         const { error: insertError } = await mySupabase
             .from('user_stats')
@@ -82,7 +66,7 @@ async function signUp(name, email, password) {
     }
     
     statusDiv.className = 'status-message success';
-    statusDiv.innerText = 'Регистрация успешна! Теперь войдите.';
+    statusDiv.innerText = 'Регистрация успешна. Теперь войдите.';
     
     document.getElementById('reg-name').value = '';
     document.getElementById('reg-email').value = '';
@@ -105,26 +89,10 @@ async function signUp(name, email, password) {
         statusDiv.innerText = '';
     }, 1500);
     
+    showAuthSection();
     return true;
 }
 
-// ============================================================
-// ФУНКЦИЯ ВЫХОДА
-// ============================================================
-async function signOut() {
-    const { error } = await mySupabase.auth.signOut();
-    
-    if (error) {
-        alert('Ошибка выхода: ' + error.message);
-        return;
-    }
-    
-    showAuthSection();
-}
-
-// ============================================================
-// ПОКАЗАТЬ ГЛАВНОЕ МЕНЮ (после входа)
-// ============================================================
 function showMainMenu() {
     const authSection = document.getElementById('auth-section');
     const mainMenuSection = document.getElementById('main-menu-section');
@@ -133,9 +101,6 @@ function showMainMenu() {
     if (mainMenuSection) mainMenuSection.style.display = 'block';
 }
 
-// ============================================================
-// ПОКАЗАТЬ ФОРМУ ВХОДА (после выхода)
-// ============================================================
 function showAuthSection() {
     const authSection = document.getElementById('auth-section');
     const mainMenuSection = document.getElementById('main-menu-section');
@@ -173,9 +138,6 @@ function showAuthSection() {
     }
 }
 
-// ============================================================
-// ПРОВЕРКА СЕССИИ
-// ============================================================
 async function checkSession() {
     const { data: { session } } = await mySupabase.auth.getSession();
     
@@ -186,13 +148,7 @@ async function checkSession() {
     }
 }
 
-// ============================================================
-// НАСТРОЙКА ИНТЕРФЕЙСА
-// ============================================================
-document.addEventListener('DOMContentLoaded', () => {
-    
-    console.log('Скрипт загружен!');
-    
+document.addEventListener('DOMContentLoaded', () => {  
     checkSession();
     
     const loginTab = document.querySelector('[data-tab="login"]');
@@ -203,14 +159,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const registerBtn = document.getElementById('register-btn');
     const logoutMainBtn = document.getElementById('logoutMainBtn');
     
-    console.log('Элементы:', { 
-        loginTab: !!loginTab, 
-        registerTab: !!registerTab,
-        loginBtn: !!loginBtn,
-        registerBtn: !!registerBtn
-    });
-    
-    // Переключение вкладок
     if (loginTab && registerTab) {
         loginTab.addEventListener('click', function(e) {
             e.preventDefault();
@@ -229,7 +177,6 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
     
-    // Кнопка входа
     if (loginBtn) {
         loginBtn.addEventListener('click', async function() {
             const email = document.getElementById('login-email').value.trim();
@@ -248,7 +195,6 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
     
-    // Кнопка регистрации
     if (registerBtn) {
         registerBtn.addEventListener('click', async function() {
             const name = document.getElementById('reg-name').value.trim();
@@ -277,14 +223,13 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
     
-    // Кнопка выхода
     if (logoutMainBtn) {
         logoutMainBtn.addEventListener('click', async function() {
             await signOut();
+            showAuthSection();
         });
     }
     
-    // Enter на полях ввода
     const inputs = document.querySelectorAll('.auth-input');
     inputs.forEach(input => {
         input.addEventListener('keypress', (e) => {

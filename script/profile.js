@@ -1,14 +1,3 @@
-// ============================================================
-// НАСТРОЙКА SUPABASE - ЗАМЕНИТЕ НА СВОИ ДАННЫЕ!
-// ============================================================
-const MY_SUPABASE_URL = 'https://pevaixbmyyeixzifovlf.supabase.co';
-const MY_SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InBldmFpeGJteXllaXh6aWZvdmxmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzkwOTA0MDYsImV4cCI6MjA5NDY2NjQwNn0.Ov96oqpbOfd1o3AxmC6S2sqV8w682d8dzRrjnHCPDzo';
-
-const mySupabase = window.supabase.createClient(MY_SUPABASE_URL, MY_SUPABASE_ANON_KEY);
-
-// ============================================================
-// СПИСОК ДОСТУПНЫХ АВАТАРОВ
-// ============================================================
 const AVAILABLE_AVATARS = [
     { id: 'avatar1', name: 'Светлячок', file: 'avatar1.png' },
     { id: 'avatar2', name: 'Эванесса', file: 'avatar2.png' },
@@ -17,44 +6,12 @@ const AVAILABLE_AVATARS = [
     { id: 'avatar5', name: 'Серебряный Волк', file: 'avatar5.png' }
 ];
 
-// ============================================================
-// ПОЛУЧЕНИЕ ТЕКУЩЕГО ПОЛЬЗОВАТЕЛЯ
-// ============================================================
-async function getCurrentUser() {
-    const { data: { user }, error } = await mySupabase.auth.getUser();
-    if (error) {
-        console.error('Ошибка получения пользователя:', error);
-        return null;
-    }
-    return user;
-}
-
-// ============================================================
-// ПРОВЕРКА АВТОРИЗАЦИИ
-// ============================================================
-async function checkAuth() {
-    const { data: { session } } = await mySupabase.auth.getSession();
-    
-    if (!session) {
-        window.location.href = 'index.html';
-        return false;
-    }
-    return true;
-}
-
-// ============================================================
-// ЗАГРУЗКА СТАТИСТИКИ ПОЛЬЗОВАТЕЛЯ
-// ============================================================
 async function loadUserStats() {
     const user = await getCurrentUser();
     
     if (!user) return null;
     
-    let { data: stats, error } = await mySupabase
-        .from('user_stats')
-        .select('*')
-        .eq('id', user.id)
-        .single();
+    let { data: stats, error } = await mySupabase.from('user_stats').select('*').eq('id', user.id).single();
     
     if (error && error.code === 'PGRST116') {
         const { data: newStats, error: insertError } = await mySupabase
@@ -80,9 +37,6 @@ async function loadUserStats() {
     return stats;
 }
 
-// ============================================================
-// ОБНОВЛЕНИЕ АВАТАРА
-// ============================================================
 async function updateAvatar(avatarFile) {
     const user = await getCurrentUser();
     if (!user) throw new Error('Пользователь не авторизован');
@@ -94,14 +48,10 @@ async function updateAvatar(avatarFile) {
     
     if (error) throw error;
     
-    // Обновляем отображение
     document.getElementById('avatarImg').src = `../style/images/${avatarFile}`;
     return true;
 }
 
-// ============================================================
-// ЗАГРУЗКА ТЕКУЩЕГО АВАТАРА
-// ============================================================
 function loadAvatar(avatarFile) {
     const avatarImg = document.getElementById('avatarImg');
     if (avatarImg && avatarFile) {
@@ -109,9 +59,6 @@ function loadAvatar(avatarFile) {
     }
 }
 
-// ============================================================
-// ОБНОВЛЕНИЕ ИМЕНИ
-// ============================================================
 async function updateName(newName) {
     const user = await getCurrentUser();
     if (!user) throw new Error('Пользователь не авторизован');
@@ -133,9 +80,6 @@ async function updateName(newName) {
     return true;
 }
 
-// ============================================================
-// ОТОБРАЖЕНИЕ ПРОФИЛЯ
-// ============================================================
 async function displayProfile() {
     const user = await getCurrentUser();
     const stats = await loadUserStats();
@@ -154,15 +98,11 @@ async function displayProfile() {
         document.getElementById('amphoreusScore').innerText = stats?.amphoreus_p || 0;
         document.getElementById('plancardiaScore').innerText = stats?.plancardia_p || 0;
         
-        // Загружаем аватар
         const avatarFile = stats?.avatar || 'avatar1.png';
         loadAvatar(avatarFile);
     }
 }
 
-// ============================================================
-// ПОСТРОЕНИЕ СЕТКИ АВАТАРОВ
-// ============================================================
 function buildAvatarGrid(currentAvatar) {
     const grid = document.getElementById('avatarGrid');
     if (!grid) return;
@@ -184,12 +124,10 @@ function buildAvatarGrid(currentAvatar) {
         option.addEventListener('click', async () => {
             try {
                 await updateAvatar(avatar.file);
-                showToast(`Аватар "${avatar.name}" установлен!`, 'success');
+                showToast(`Аватар ${avatar.name} установлен`, 'success');
                 
-                // Закрываем модальное окно
                 document.getElementById('avatarModal').style.display = 'none';
                 
-                // Обновляем выделение в сетке
                 document.querySelectorAll('.avatar-option').forEach(opt => {
                     opt.classList.remove('selected');
                 });
@@ -203,9 +141,6 @@ function buildAvatarGrid(currentAvatar) {
     });
 }
 
-// ============================================================
-// ПОКАЗ МОДАЛЬНОГО ОКНА ВЫБОРА АВАТАРА
-// ============================================================
 async function showAvatarModal() {
     const stats = await loadUserStats();
     const currentAvatar = stats?.avatar || 'avatar1.png';
@@ -214,46 +149,13 @@ async function showAvatarModal() {
     document.getElementById('avatarModal').style.display = 'flex';
 }
 
-// ============================================================
-// ВЫХОД ИЗ АККАУНТА
-// ============================================================
-async function signOut() {
-    const { error } = await mySupabase.auth.signOut();
-    
-    if (error) {
-        showToast('Ошибка выхода: ' + error.message, 'error');
-        return;
-    }
-    
-    window.location.href = 'index.html';
-}
-
-// ============================================================
-// ВСПОМОГАТЕЛЬНАЯ ФУНКЦИЯ ДЛЯ УВЕДОМЛЕНИЙ
-// ============================================================
-function showToast(message, type = 'info') {
-    const toast = document.getElementById('statusMessage');
-    toast.innerText = message;
-    toast.style.display = 'block';
-    toast.style.background = type === 'error' ? 'rgba(220, 53, 69, 0.9)' : 'rgba(0, 0, 0, 0.8)';
-    toast.style.color = type === 'error' ? '#fff' : '#e3c179';
-    
-    setTimeout(() => {
-        toast.style.display = 'none';
-    }, 3000);
-}
-
-// ============================================================
-// НАСТРОЙКА ИНТЕРФЕЙСА
-// ============================================================
 document.addEventListener('DOMContentLoaded', async () => {
     
-    const isAuth = await checkAuth();
+    const isAuth = await checkAuth(true);
     if (!isAuth) return;
     
     await displayProfile();
     
-    // === КНОПКА НАЗАД ===
     const backBtn = document.getElementById('backBtn');
     if (backBtn) {
         backBtn.addEventListener('click', () => {
@@ -261,15 +163,14 @@ document.addEventListener('DOMContentLoaded', async () => {
         });
     }
     
-    // === КНОПКА ВЫХОДА ===
     const logoutBtn = document.getElementById('logoutBtn');
     if (logoutBtn) {
         logoutBtn.addEventListener('click', async () => {
             await signOut();
+            window.location.href = 'index.html';
         });
     }
     
-    // === КНОПКА СМЕНЫ АВАТАРА ===
     const changeAvatarBtn = document.getElementById('changeAvatarBtn');
     if (changeAvatarBtn) {
         changeAvatarBtn.addEventListener('click', () => {
@@ -277,7 +178,6 @@ document.addEventListener('DOMContentLoaded', async () => {
         });
     }
     
-    // === МОДАЛЬНОЕ ОКНО АВАТАРОВ - ЗАКРЫТИЕ ===
     const closeAvatarModal = document.getElementById('closeAvatarModal');
     const avatarModal = document.getElementById('avatarModal');
     
@@ -293,7 +193,6 @@ document.addEventListener('DOMContentLoaded', async () => {
         }
     });
     
-    // === МОДАЛЬНОЕ ОКНО СМЕНЫ ИМЕНИ ===
     const nameModal = document.getElementById('nameModal');
     const editNameBtn = document.getElementById('editNameBtn');
     const closeNameModal = document.getElementById('closeNameModal');
@@ -326,7 +225,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             try {
                 await updateName(newName);
                 nameModal.style.display = 'none';
-                showToast('Имя успешно обновлено!', 'success');
+                showToast('Имя успешно обновлено', 'success');
             } catch (error) {
                 showToast('Ошибка: ' + error.message, 'error');
             }

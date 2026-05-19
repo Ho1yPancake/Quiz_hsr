@@ -1,38 +1,6 @@
-// ============================================================
-// НАСТРОЙКА SUPABASE - ЗАМЕНИТЕ НА СВОИ ДАННЫЕ
-// ============================================================
-const SUPABASE_URL = 'https://pevaixbmyyeixzifovlf.supabase.co';
-const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InBldmFpeGJteXllaXh6aWZvdmxmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzkwOTA0MDYsImV4cCI6MjA5NDY2NjQwNn0.Ov96oqpbOfd1o3AxmC6S2sqV8w682d8dzRrjnHCPDzo';
-
-// Проверяем, существует ли уже supabase объект
-if (typeof window.supabase === 'undefined') {
-    console.error('Supabase не загружен!');
-}
-
-// Используем уникальное имя переменной или проверяем существование
-const mySupabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-
-// ============================================================
-// ГЛОБАЛЬНЫЕ ПЕРЕМЕННЫЕ
-// ============================================================
 let currentUserId = null;
 let leaderboardData = [];
 
-// ============================================================
-// ПОЛУЧЕНИЕ ТЕКУЩЕГО ПОЛЬЗОВАТЕЛЯ
-// ============================================================
-async function getCurrentUser() {
-    const { data: { user }, error } = await mySupabase.auth.getUser();
-    if (error) {
-        console.error('Ошибка получения пользователя:', error);
-        return null;
-    }
-    return user;
-}
-
-// ============================================================
-// ЗАГРУЗКА ТАБЛИЦЫ ЛИДЕРОВ
-// ============================================================
 async function loadLeaderboard() {
     const tbody = document.getElementById('tableBody');
     tbody.innerHTML = '<tr class="empty-row"><td colspan="9">Загрузка данных...</td></tr>';
@@ -56,9 +24,6 @@ async function loadLeaderboard() {
     }
 }
 
-// ============================================================
-// ОБНОВЛЕНИЕ СТАТИСТИКИ
-// ============================================================
 function updateStatsSummary(players) {
     const totalPlayers = players.length;
     const recordScore = players.length > 0 ? players[0].total_p : 0;
@@ -67,9 +32,6 @@ function updateStatsSummary(players) {
     document.getElementById('recordScore').innerText = recordScore;
 }
 
-// ============================================================
-// ПОЛУЧЕНИЕ РАНГА (ДЛЯ ЦВЕТА)
-// ============================================================
 function getRankClass(rank) {
     if (rank === 0) return 'rank-1';
     if (rank === 1) return 'rank-2';
@@ -77,9 +39,6 @@ function getRankClass(rank) {
     return '';
 }
 
-// ============================================================
-// ФОРМАТИРОВАНИЕ МЕСТА
-// ============================================================
 function formatRank(rank) {
     if (rank === 0) return '1';
     if (rank === 1) return '2';
@@ -87,22 +46,6 @@ function formatRank(rank) {
     return (rank + 1).toString();
 }
 
-// ============================================================
-// ЭКРАНИРОВАНИЕ HTML
-// ============================================================
-function escapeHtml(str) {
-    if (!str) return '';
-    return str
-        .replace(/&/g, '&amp;')
-        .replace(/</g, '&lt;')
-        .replace(/>/g, '&gt;')
-        .replace(/"/g, '&quot;')
-        .replace(/'/g, '&#39;');
-}
-
-// ============================================================
-// ОТРИСОВКА ТАБЛИЦЫ
-// ============================================================
 function renderLeaderboard(players) {
     const tbody = document.getElementById('tableBody');
     
@@ -126,7 +69,7 @@ function renderLeaderboard(players) {
                 <td>
                     <div class="user-cell">
                         <img src="../style/images/${avatarFile}" alt="avatar" class="user-avatar" 
-                             onerror="this.src='style/images/avatar1.png'">
+                             onerror="this.src='../style/images/avatar1.png'">
                         <span class="user-name">${escapeHtml(player.nickname)}</span>
                     </div>
                 </td>
@@ -144,39 +87,19 @@ function renderLeaderboard(players) {
     tbody.innerHTML = html;
 }
 
-// ============================================================
-// ОБНОВЛЕНИЕ СЕССИИ ПОЛЬЗОВАТЕЛЯ
-// ============================================================
 async function updateCurrentUser() {
     const user = await getCurrentUser();
     currentUserId = user ? user.id : null;
 }
 
-// ============================================================
-// ПРОВЕРКА АВТОРИЗАЦИИ
-// ============================================================
-async function checkAndRedirect() {
-    const { data: { session } } = await mySupabase.auth.getSession();
-    
-    if (!session) {
-        window.location.href = 'index.html';
-        return false;
-    }
-    return true;
-}
-
-// ============================================================
-// НАСТРОЙКА ИНТЕРФЕЙСА
-// ============================================================
 document.addEventListener('DOMContentLoaded', async () => {
     
-    const isAuth = await checkAndRedirect();
+    const isAuth = await checkAuth(true);
     if (!isAuth) return;
     
     await updateCurrentUser();
     await loadLeaderboard();
     
-    // КНОПКА НАЗАД
     const backBtn = document.getElementById('backBtn');
     if (backBtn) {
         backBtn.addEventListener('click', () => {
@@ -184,7 +107,6 @@ document.addEventListener('DOMContentLoaded', async () => {
         });
     }
     
-    // КНОПКА ОБНОВИТЬ
     const refreshBtn = document.getElementById('refreshBtn');
     if (refreshBtn) {
         refreshBtn.addEventListener('click', async () => {
@@ -194,7 +116,6 @@ document.addEventListener('DOMContentLoaded', async () => {
         });
     }
     
-    // Слушаем изменения в БД
     mySupabase
         .channel('leaderboard_changes')
         .on('postgres_changes', 
